@@ -1,4 +1,4 @@
-package dto;
+package edu.fptu.thomas.dang.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

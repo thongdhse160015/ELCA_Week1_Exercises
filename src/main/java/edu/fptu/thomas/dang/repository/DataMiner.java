@@ -1,4 +1,4 @@
-package repository;
+package edu.fptu.thomas.dang.repository;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

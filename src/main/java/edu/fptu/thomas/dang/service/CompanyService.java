@@ -1,11 +1,11 @@
-package service;
-
-import dto.CompanyDTO;
-import repository.csv.CSVDataMiner;
+package edu.fptu.thomas.dang.service;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import edu.fptu.thomas.dang.dto.CompanyDTO;
+import edu.fptu.thomas.dang.repository.csv.CSVDataMiner;
 
 public class CompanyService {
 

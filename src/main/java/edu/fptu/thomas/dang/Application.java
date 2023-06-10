@@ -1,6 +1,4 @@
-package view;
-
-import service.CompanyService;
+package edu.fptu.thomas.dang;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -9,7 +7,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
-public class App {
+import edu.fptu.thomas.dang.service.CompanyService;
+
+public class Application {
     private static final Scanner scanner = new Scanner(System.in);
     private static String csvFile = "./import/companies.csv";
 

@@ -1,10 +1,12 @@
-package repository.csv;
+package edu.fptu.thomas.dang.repository.csv;
 
-import dto.CompanyDTO;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import repository.DataMiner;
+
+import edu.fptu.thomas.dang.dto.CompanyDTO;
+import edu.fptu.thomas.dang.repository.DataMiner;
+import edu.fptu.thomas.dang.utils.MyLogger;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -13,7 +15,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class CSVDataMiner extends DataMiner {
 
@@ -35,21 +36,21 @@ public class CSVDataMiner extends DataMiner {
     @Override
     public Map<Integer, CompanyDTO> parseData() {
         Map<Integer, CompanyDTO> companyList = null;
-        Logger.getLogger(CSVDataMiner.class.getName()).info("Reading file: ".concat(this.filePath.toString()));
+        MyLogger.getInstance()
+                .info("Reading file: ".concat(this.filePath.toString()));
 
         // Measure the time before reading the file
         Instant start = Instant.now();
-        try (CSVParser csvParser =
-                     CSVFormat.DEFAULT
-                             .withFirstRecordAsHeader()
-                             .parse(new FileReader(this.filePath.toString()))) {
+        try (CSVParser csvParser = CSVFormat.DEFAULT
+                .withFirstRecordAsHeader()
+                .parse(new FileReader(this.filePath.toString()))) {
             companyList = new HashMap<>();
             for (CSVRecord record : csvParser) {
                 CompanyDTO companyDTO = mapper.mapToObject(record);
                 companyList.put(companyDTO.getId(), companyDTO);
             }
         } catch (IOException e) {
-            Logger.getLogger(FileMonitor.class.getName()).warning(e.getMessage());
+            MyLogger.getInstance().warning(e.getMessage());
         }
 
         // Measure the time after reading the file
@@ -57,7 +58,8 @@ public class CSVDataMiner extends DataMiner {
 
         // Calculate the duration
         Duration duration = Duration.between(start, end);
-        Logger.getLogger(CSVDataMiner.class.getName()).info("Reading the file took " + duration.toMillis() + " milliseconds");
+        MyLogger.getInstance()
+                .info("Reading the file took " + duration.toMillis() + " milliseconds");
 
         return companyList;
     }
@@ -66,9 +68,11 @@ public class CSVDataMiner extends DataMiner {
         try {
             WatchService watchService = FileSystems.getDefault().newWatchService();
             Path directory = Paths.get(this.filePath.toString()).getParent();
-            directory.register(watchService, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_MODIFY);
+            directory.register(watchService, StandardWatchEventKinds.ENTRY_CREATE,
+                    StandardWatchEventKinds.ENTRY_MODIFY);
 
-            Logger.getLogger(FileMonitor.class.getName()).info("Monitoring directory: " + directory);
+            MyLogger.getInstance()
+                .info("Monitoring directory: " + directory);
 
             while (!shouldStopMonitoring) {
                 WatchKey key = watchService.take();
@@ -86,9 +90,9 @@ public class CSVDataMiner extends DataMiner {
                 key.reset();
             }
         } catch (IOException e) {
-            Logger.getLogger(FileMonitor.class.getName()).warning(e.getMessage());
+            MyLogger.getInstance().warning(e.getMessage());
         } catch (InterruptedException e) {
-            Logger.getLogger(FileMonitor.class.getName()).warning(e.getMessage());
+            MyLogger.getInstance().warning(e.getMessage());
             // Restore interrupted state...
             Thread.currentThread().interrupt();
         }

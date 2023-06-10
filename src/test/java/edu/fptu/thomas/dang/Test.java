@@ -1,9 +1,6 @@
 package edu.fptu.thomas.dang;
 
-import repository.csv.CSVDataMiner;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import edu.fptu.thomas.dang.repository.csv.CSVDataMiner;
 
 public class Test
 {
